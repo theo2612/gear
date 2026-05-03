@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MY SETUP :: b7h30</title>
+  <meta name="description" content="The actual hardware, gear, and training resources I use for cybersecurity streaming and homelab work.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323:wght@400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:          #00ff41;
+      --dim-green:      #00a82a;
+      --muted-green:    rgba(0,255,65,0.5);
+      --purple:         #9b59b6;
+      --purple-bright:  #c084fc;
+      --blue:           #00b4ff;
+      --blue-dim:       rgba(0,180,255,0.45);
+      --red:            #ff2244;
+      --orange:         #ff9f1c;
+      --bg:             #050508;
+      --bg-panel:       #0a0a12;
+      --bg-terminal:    #07070e;
+      --text:           #8899aa;
+      --border:         #141420;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg);
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 3px,
+          rgba(0,0,0,0.18) 3px,
+          rgba(0,0,0,0.18) 4px
+        );
+      color: var(--green);
+      font-family: 'Share Tech Mono', 'Courier New', monospace;
+      min-height: 100vh;
+      padding: 24px 20px 60px;
+    }
+
+    @keyframes blink   { 0%,100%{opacity:1} 50%{opacity:0} }
+    @keyframes flicker  { 0%,97%,100%{opacity:1} 98%{opacity:.75} 99%{opacity:.9} }
+    @keyframes glow-pulse { 0%,100%{box-shadow:0 0 8px rgba(0,255,65,.3)} 50%{box-shadow:0 0 20px rgba(0,255,65,.6)} }
+
+    .wrapper {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* ── Header ─────────────────────────────── */
+    .hero {
+      text-align: center;
+      padding: 40px 0 30px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 40px;
+    }
+
+    .hero h1 {
+      font-family: 'VT323', monospace;
+      font-size: 3rem;
+      color: var(--green);
+      text-shadow: 0 0 20px rgba(0,255,65,.5);
+      letter-spacing: 4px;
+      margin-bottom: 8px;
+    }
+
+    .hero .tagline {
+      color: var(--text);
+      font-size: .95rem;
+      letter-spacing: 1px;
+    }
+
+    .hero .tagline em {
+      color: var(--muted-green);
+      font-style: normal;
+    }
+
+    /* ── Nav ─────────────────────────────── */
+    .nav {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .nav a {
+      color: var(--dim-green);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      font-size: .85rem;
+      transition: all .2s;
+    }
+
+    .nav a:hover {
+      color: var(--green);
+      border-color: var(--dim-green);
+      box-shadow: 0 0 10px rgba(0,255,65,.2);
+    }
+
+    /* ── Section ─────────────────────────────── */
+    .section {
+      margin-bottom: 50px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-header .icon {
+      font-size: 1.4rem;
+    }
+
+    .section-header h2 {
+      font-family: 'VT323', monospace;
+      font-size: 1.8rem;
+      color: var(--purple-bright);
+      text-shadow: 0 0 12px rgba(192,132,252,.3);
+      letter-spacing: 2px;
+    }
+
+    .section-header .prompt {
+      color: var(--dim-green);
+      font-size: .8rem;
+    }
+
+    .section-desc {
+      color: var(--text);
+      font-size: .85rem;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    /* ── Item Cards ─────────────────────────────── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      padding: 18px;
+      transition: all .25s;
+      position: relative;
+    }
+
+    .card:hover {
+      border-color: var(--dim-green);
+      box-shadow: 0 0 15px rgba(0,255,65,.1);
+    }
+
+    .card .item-name {
+      font-family: 'VT323', monospace;
+      font-size: 1.2rem;
+      color: var(--green);
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .card .item-spec {
+      color: var(--text);
+      font-size: .78rem;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .card .tag {
+      display: inline-block;
+      font-size: .7rem;
+      padding: 2px 8px;
+      border: 1px solid;
+      margin-right: 6px;
+      margin-bottom: 4px;
+    }
+
+    .tag-cpu    { color: var(--orange); border-color: var(--orange); }
+    .tag-cool   { color: var(--blue);   border-color: var(--blue); }
+    .tag-mobo   { color: var(--purple-bright); border-color: var(--purple-bright); }
+    .tag-ram    { color: #6ee7b7; border-color: #6ee7b7; }
+    .tag-storage{ color: #fbbf24; border-color: #fbbf24; }
+    .tag-gpu    { color: var(--red);    border-color: var(--red); }
+    .tag-case   { color: var(--text);   border-color: var(--text); }
+    .tag-psu    { color: #a78bfa; border-color: #a78bfa; }
+    .tag-periph { color: var(--blue);   border-color: var(--blue); }
+    .tag-stream { color: var(--orange); border-color: var(--orange); }
+    .tag-monitor{ color: var(--purple-bright); border-color: var(--purple-bright); }
+
+    .buy-btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 6px 16px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .8rem;
+      color: var(--bg);
+      background: var(--green);
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .buy-btn:hover {
+      background: #33ff66;
+      box-shadow: 0 0 15px rgba(0,255,65,.5);
+    }
+
+    .no-link {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: .75rem;
+      color: var(--text);
+      opacity: .6;
+    }
+
+    /* ── Training Cards ─────────────────────────────── */
+    .training-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      padding: 24px;
+      margin-bottom: 16px;
+      transition: all .25s;
+    }
+
+    .training-card:hover {
+      border-color: var(--purple);
+      box-shadow: 0 0 20px rgba(155,89,182,.15);
+    }
+
+    .training-card h3 {
+      font-family: 'VT323', monospace;
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+    }
+
+    .training-card h3.htb { color: var(--green); }
+    .training-card h3.tcm { color: var(--blue); }
+
+    .training-card p {
+      color: var(--text);
+      font-size: .85rem;
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    .training-card .buy-btn.htb-btn {
+      background: var(--green);
+    }
+
+    .training-card .buy-btn.tcm-btn {
+      background: var(--blue);
+    }
+
+    .training-card .buy-btn.tcm-btn:hover {
+      background: #33ccff;
+      box-shadow: 0 0 15px rgba(0,180,255,.5);
+    }
+
+    /* ── Merch ─────────────────────────────── */
+    .merch-banner {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      padding: 30px;
+      text-align: center;
+      transition: all .25s;
+    }
+
+    .merch-banner:hover {
+      border-color: var(--purple);
+      box-shadow: 0 0 20px rgba(155,89,182,.15);
+    }
+
+    .merch-banner h3 {
+      font-family: 'VT323', monospace;
+      font-size: 1.6rem;
+      color: var(--orange);
+      margin-bottom: 8px;
+    }
+
+    .merch-banner p {
+      color: var(--text);
+      font-size: .85rem;
+      margin-bottom: 16px;
+    }
+
+    .merch-banner .buy-btn {
+      background: var(--orange);
+    }
+
+    .merch-banner .buy-btn:hover {
+      background: #ffb347;
+      box-shadow: 0 0 15px rgba(255,159,28,.5);
+    }
+
+    /* ── Footer ─────────────────────────────── */
+    .footer {
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text);
+      font-size: .75rem;
+      line-height: 1.8;
+    }
+
+    .footer a {
+      color: var(--dim-green);
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      color: var(--green);
+    }
+
+    .footer .affiliate-note {
+      opacity: .5;
+      font-size: .7rem;
+      margin-top: 6px;
+    }
+
+    /* ── Responsive ─────────────────────────────── */
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 2rem; }
+      .grid { grid-template-columns: 1fr; }
+      .nav a { font-size: .75rem; padding: 5px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <!-- ═══════ HERO ═══════ -->
+  <div class="hero">
+    <h1>b7h30 // MY SETUP</h1>
+    <p class="tagline">
+      <em>this is literally what I use.</em> every stream. every lab. every box.
+    </p>
+  </div>
+
+  <!-- ═══════ NAV ═══════ -->
+  <div class="nav">
+    <a href="#training">Training</a>
+    <a href="#stream">Stream Gear</a>
+    <a href="#merch">Merch</a>
+    <a href="#desktop">Desktop</a>
+    <a href="#proxmox">Proxmox Server</a>
+  </div>
+
+  <!-- ═══════ TRAINING ═══════ -->
+  <div id="training" class="section">
+    <div class="section-header">
+      <span class="icon">&#9618;</span>
+      <h2>CYBER TRAINING</h2>
+      <span class="prompt">// how I learn &mdash; and how you can too</span>
+    </div>
+    <p class="section-desc">
+      These are the two platforms I actually use and recommend for hands-on cybersecurity training. If you're thinking about getting into pentesting, offensive security, or just want to sharpen your skills &mdash; start here.
+    </p>
+
+    <div class="training-card">
+      <h3 class="htb">Hack The Box</h3>
+      <p>
+        Active machines, retired boxes, pro labs, and a massive community. This is where I grind boxes on stream. If you've watched me pop shells live, this is where it happens. HTB teaches you real-world enumeration, exploitation, and post-exploitation through hands-on practice.
+      </p>
+      <a href="https://hacktheboxltd.sjv.io/WqZYEX" target="_blank" rel="noopener" class="buy-btn htb-btn">Start Hacking &rarr;</a>
+    </div>
+
+    <div class="training-card">
+      <h3 class="tcm">TCM Security Academy &mdash; All Access Pass</h3>
+      <p>
+        Heath Adams' courses are some of the best structured cybersecurity training out there. The All Access Pass gives you everything &mdash; Practical Ethical Hacking, Windows &amp; Linux Privilege Escalation, OSINT, Active Directory, and more. If you want structured learning paths instead of figuring it all out solo, this is it.
+      </p>
+      <a href="https://academy.tcm-sec.com/p/the-all-access-pass?affcode=770707_seneyt4m" target="_blank" rel="noopener" class="buy-btn tcm-btn">Get All Access &rarr;</a>
+    </div>
+  </div>
+
+  <!-- ═══════ STREAM GEAR ═══════ -->
+  <div id="stream" class="section">
+    <div class="section-header">
+      <span class="icon">&#9618;</span>
+      <h2>STREAM GEAR</h2>
+      <span class="prompt">// what you see and hear on twitch.tv/b7h30</span>
+    </div>
+    <p class="section-desc">
+      The peripherals, audio, and video gear powering the stream. Nothing overkill &mdash; just what works.
+    </p>
+    <div class="grid">
+
+      <div class="card">
+        <div class="item-name">Shure MV6</div>
+        <div class="item-spec">USB microphone &mdash; broadcast-quality audio without an interface or preamp.</div>
+        <span class="tag tag-stream">MIC</span>
+        <br><a href="https://amzn.to/4tuyZWz" target="_blank" rel="noopener" class="buy-btn">Check Price &rarr;</a>
+      </div>
+
+      <div class="card">
+        <div class="item-name">Kinesis Freestyle2</div>
+        <div class="item-spec">Split ergonomic keyboard &mdash; wrists thank me every stream.</div>
+        <span class="tag tag-periph">KEYBOARD</span>
+        <br><a href="https://amzn.to/4siJcV8" target="_blank" rel="noopener" class="buy-btn">Check Price &rarr;</a>
+      </div>
+
+      <div class="card">
+        <div class="item-name">DELL S3222DGM</div>
+        <div class="item-spec">32" curved QHD gaming monitor &mdash; main display for streaming.</div>
+        <span class="tag tag-monitor">MONITOR</span>
+        <br><a href="https://amzn.to/4vfxXj0" target="_blank" rel="noopener" class="buy-btn">Check Price &rarr;</a>
+      </div>
+
+      <div class="card">
+        <div class="item-name">DELL G2725D</div>
+        <div class="item-spec">27" QHD monitor &mdash; secondary screen for chat and dashboards.</div>
+        <span class="tag tag-monitor">MONITOR</span>
+        <br><a href="https://amzn.to/4ttSVsu" target="_blank" rel="noopener" class="buy-btn">Check Price &rarr;</a>
+      </div>
+
+      <div class="card">
+        <div class="item-name">HP 32f</div>
+        <div class="item-spec">32" monitor &mdash; third screen because three is barely enough.</div>
+        <span class="tag tag-monitor">MONITOR</span>
+        <br><a href="https://amzn.to/4dxS99q" target="_blank" rel="noopener" class="buy-btn">Check Price &rarr;</a>
+      </div>
+
+      <div class="card">
+        <div class="item-name">Elgato Stream Deck (6-Key)</div>
+        <div class="item-spec">One-touch scene switches, sound triggers, and bot controls.</div>
+        <span class="tag tag-stream">STREAM DECK</span>
+        <br><a href="https://amzn.to/4smlbwu" target="_blank" rel="noopener" class="buy-btn">Check Price &rarr;</a>
+      </div>
+
+      <div class="card">
+        <div class="item-name">Action Cam 4</div>
+        <div class="item-spec">Compact action camera &mdash; used for facecam and IRL content.</div>
+        <span class="tag tag-stream">CAMERA</span>
+        <br><a href="https://amzn.to/4veosAp" target="_blank" rel="noopener" class="buy-btn">Check Price &rarr;</a>
+      </div>
+
+      <div class="card">
+        <div class="item-name">WiZ Connected Smart LED Bulb</div>
+        <div class="item-spec">RGB smart lighting &mdash; sets the stream vibe, controllable from the desk.</div>
+        <span class="tag tag-stream">LIGHTING</span>
+        <br><a href="https://amzn.to/41PnqgL" target="_blank" rel="noopener" class="buy-btn">Check Price &rarr;</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════ MERCH ═══════ -->
+  <div id="merch" class="section">
+    <div class="section-header">
+      <span class="icon">&#9618;</span>
+      <h2>MERCH</h2>
+      <span class="prompt">// rep the channel</span>
+    </div>
+
+    <div class="merch-banner">
+      <h3>b7h30 SHOP</h3>
+      <p>Tees, hoodies, stickers, mugs &mdash; cybersecurity humor meets absurdist energy.</p>
+      <a href="https://b7h30-shop.fourthwall.com/" target="_blank" rel="noopener" class="buy-btn">Browse Merch &rarr;</a>
+    </div>
+  </div>
+
+  <!-- ═══════ DESKTOP PC ═══════ -->
+  <div id="desktop" class="section">
+    <div class="section-header">
+      <span class="icon">&#9618;</span>
+      <h2>DESKTOP PC</h2>
+      <span class="prompt">// daily driver for streaming, labs, and CTFs</span>
+    </div>
+    <p class="section-desc">
+      This is the machine running OBS, PainfulBot, and whatever VM chaos I'm throwing at it that night.
+    </p>
+    <div class="grid">
+
+      <div class="card">
+        <div class="item-name">Intel Core i9-12900K</div>
+        <div class="item-spec">3.2 GHz 16-Core Processor &mdash; handles VMs and streaming simultaneously without breaking a sweat.</div>
+        <span class="tag tag-cpu">CPU</span>
+        <br><a href="https://amzn.to/4tr0Fvu" target="_blank" rel="noopener" class="buy-btn">Check Price &rarr;</a>
+      </div>
+
+      <div class="card">
+        <div class="item-name">Cooler Master MasterLiquid ML240L ARGB V2</div>
+        <div class="item-spec">62 CFM Liquid CPU Cooler &mdash; keeps the i9 cool during long stream sessions.</div>
+        <span class="tag tag-cool">COOLER</span>
+        <br><a href="https://amzn.to/4t5Uayr" target="_blank" rel="noopener" class="buy-btn">Check Price &rarr;</a>
+      </div>
+
+      <div class="card">
+        <div class="item-name">Asus PRIME Z790-V WIFI</div>
+        <div class="item-spec">ATX LGA1700 Motherboard &mdash; DDR5 support, built-in WiFi, solid VRM.</div>
+        <span class="tag tag-mobo">MOBO</span>
+        <br><span class="no-link">// part of the build</span>
+      </div>
+
+      <div class="card">
+        <div class="item-name">G.Skill Ripjaws S5 64 GB</div>
+        <div class="item-spec">4 x 16 GB DDR5-6000 CL36 &mdash; 64 gigs because VMs eat RAM like candy.</div>
+        <span class="tag tag-ram">RAM</span>
+        <br><span class="no-link">// part of the build</span>
+      </div>
+
+      <div class="card">
+        <div class="item-name">TN470 2TB NVMe SSD</div>
+        <div class="item-spec">3D TLC NAND PCIe Gen 4 x4 M.2 2280 &mdash; fast boot, fast VMs, fast everything.</div>
+        <span class="tag tag-storage">STORAGE</span>
+        <br><a href="https://amzn.to/4c7sl1p" target="_blank" rel="noopener" class="buy-btn">Check Price &rarr;</a>
+      </div>
+
+      <div class="card">
+        <div class="item-name">EVGA GTX 1070 Ti SC Gaming</div>
+        <div class="item-spec">ACX 3.0 Black Edition 8 GB &mdash; don't need ray tracing when you're in a terminal all day.</div>
+        <span class="tag tag-gpu">GPU</span>
+        <br><span class="no-link">// part of the build</span>
+      </div>
+
+      <div class="card">
+        <div class="item-name">Corsair Carbide 275R</div>
+        <div class="item-spec">ATX Mid Tower &mdash; clean, simple, good airflow.</div>
+        <span class="tag tag-case">CASE</span>
+        <br><span class="no-link">// part of the build</span>
+      </div>
+
+      <div class="card">
+        <div class="item-name">EVGA SuperNOVA 850 G3</div>
+        <div class="item-spec">850W 80+ Gold Fully Modular &mdash; clean cables, reliable power.</div>
+        <span class="tag tag-psu">PSU</span>
+        <br><span class="no-link">// part of the build</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════ PROXMOX SERVER ═══════ -->
+  <div id="proxmox" class="section">
+    <div class="section-header">
+      <span class="icon">&#9618;</span>
+      <h2>PROXMOX SERVER</h2>
+      <span class="prompt">// homelab VM host &mdash; where the real hacking happens</span>
+    </div>
+    <p class="section-desc">
+      Dedicated Proxmox box running attack VMs, vulnerable targets, Active Directory labs &mdash; all isolated from my main rig.
+    </p>
+    <div class="grid">
+
+      <div class="card">
+        <div class="item-name">Intel Core i5-8600K</div>
+        <div class="item-spec">3.6 GHz 6-Core Processor &mdash; plenty of cores for spinning up lab VMs.</div>
+        <span class="tag tag-cpu">CPU</span>
+        <br><a href="https://amzn.to/4sebBeT" target="_blank" rel="noopener" class="buy-btn">Check Price &rarr;</a>
+      </div>
+
+      <div class="card">
+        <div class="item-name">Noctua NH-L9i chromax.black</div>
+        <div class="item-spec">33.84 CFM CPU Cooler &mdash; dead silent, low profile, Noctua quality.</div>
+        <span class="tag tag-cool">COOLER</span>
+        <br><span class="no-link">// part of the build</span>
+      </div>
+
+      <div class="card">
+        <div class="item-name">Asus Prime Z370-A</div>
+        <div class="item-spec">ATX LGA1151 Motherboard &mdash; reliable board for a server that runs 24/7.</div>
+        <span class="tag tag-mobo">MOBO</span>
+        <br><span class="no-link">// part of the build</span>
+      </div>
+
+      <div class="card">
+        <div class="item-name">TEAMGROUP T-Force Delta TUF RGB 32 GB</div>
+        <div class="item-spec">4 x 16 GB DDR4-3200 CL16 &mdash; 32 gigs keeps multiple VMs happy.</div>
+        <span class="tag tag-ram">RAM</span>
+        <br><span class="no-link">// part of the build</span>
+      </div>
+
+      <div class="card">
+        <div class="item-name">Crucial BX500 480GB (x2)</div>
+        <div class="item-spec">Two mirrored SSDs for VM storage &mdash; cheap, reliable, gets the job done.</div>
+        <span class="tag tag-storage">STORAGE</span>
+        <br><a href="https://amzn.to/4siy0Ic" target="_blank" rel="noopener" class="buy-btn">Check Price &rarr;</a>
+      </div>
+
+      <div class="card">
+        <div class="item-name">Corsair CS450M</div>
+        <div class="item-spec">450W semi-modular PSU &mdash; server doesn't need much juice.</div>
+        <span class="tag tag-psu">PSU</span>
+        <br><span class="no-link">// part of the build</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════ FOOTER ═══════ -->
+  <div class="footer">
+    <a href="https://www.twitch.tv/b7h30" target="_blank" rel="noopener">twitch.tv/b7h30</a>
+    &nbsp;&middot;&nbsp;
+    <a href="https://b7h30-shop.fourthwall.com/" target="_blank" rel="noopener">merch</a>
+    <br>
+    <span class="affiliate-note">Some links on this page are affiliate links. If you buy through them, I earn a small commission at no extra cost to you. Thanks for supporting the stream.</span>
+  </div>
+
+</div>
+
+</body>
+</html>
