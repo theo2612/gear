@@ -1,0 +1,19 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Python (start.sh uses python http.server)
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Logs
+*.log
